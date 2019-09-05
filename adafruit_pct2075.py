@@ -49,10 +49,8 @@ Implementation Notes
 
 from adafruit_register.i2c_struct import ROUnaryStruct, UnaryStruct
 from adafruit_register.i2c_bits import ROBits, RWBits
-from adafruit_register.i2c_bit import RWBit,  ROBit
+from adafruit_register.i2c_bit import RWBit, ROBit
 import adafruit_bus_device.i2c_device as i2cdevice
-
-PCT2075_DEFAULT_ADDRESS = 0x48
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_PCT2075.git"
 
@@ -68,19 +66,27 @@ class Mode:
     INTERRUPT = 1
     COMPARITOR = 0
 
+class FaultCount:
+    FAULT_1 = 0
+    FAULT_2 = 1
+    FAULT_4 = 3
+    FAULT_6 = 4
+
+
 class PCT2075:
 
     def __init__(self, i2c_bus, address=PCT2075_DEFAULT_ADDRESS):
         self.i2c_device = i2cdevice.I2CDevice(i2c_bus, address)
 
     _temperature = ROUnaryStruct(PCT2075_REGISTER_TEMP, ">h")
-    mode = RWBit(PCT2075_REGISTER_CONFIG, 1, 1)
+    mode = RWBit(PCT2075_REGISTER_CONFIG, 1, register_width=1)
 
     shutdown = RWBit(PCT2075_REGISTER_CONFIG, 0, 1)
-    _fault_queue_length = RWBits(2, PCT2075_REGISTER_CONFIG, 5, 1)
+    _fault_queue_length = RWBits(2, PCT2075_REGISTER_CONFIG, 5, register_width=1)
     _high_temperature_threshold = UnaryStruct(PCT2075_REGISTER_TOS, ">h")
-    _temp_hysteresis = UnaryStruct(PCT2075_REGISTER_TOS, ">h")
-    _idle_time = RWBits(5, PCT2075_REGISTER_TIDLE, 0, 1)
+    _temp_hysteresis = UnaryStruct(PCT2075_REGISTER_THYST, ">h")
+    _idle_time = RWBits(5, PCT2075_REGISTER_TIDLE, 0, register_width=1)
+    high_temp_active_low = RWBit(PCT2075_REGISTER_CONFIG, 2, register_width=1)
 
     @property
     def temperature(self):
@@ -89,18 +95,27 @@ class PCT2075:
 
     @property
     def high_temperature_threshold(self):
-        return (self._high_temperature_threshold >> 7)
+        return (self._high_temperature_threshold >> 7) * 0.5
 
     @high_temperature_threshold.setter
     def high_temperature_threshold(self, value):
-        self._high_temp_threshold = (value <<7)
+        self._high_temperature_threshold = (int(value * 2) << 7)
 
     @property
-    def temperatur_hysteresis(self):
-        return (self._temp_hysteresis >> 7)
+    def temperature_hysteresis(self):
+        return (self._temp_hysteresis  >> 7) * 0.5
 
-    @temperatur_hysteresis.setter
-    def temperatur_hysteresis(self, value):
-        self._temp_hysteresis = (value << 7)
+    @temperature_hysteresis.setter
+    def temperature_hysteresis(self, value):
+        # TODO: check that hyst is < threshold
+        self._temp_hysteresis = (int(value * 2) << 7)
 
+    @property
+    def faults_to_alert(self):
+        return self._fault_queue_length
 
+    @faults_to_alert.setter
+    def faults_to_alert(self, value):
+        if value > 4 or value < 1:
+            raise ValueError("faults_to_alert must be an adafruit_pct2075.FaultCount")
+        self._fault_queue_length = value
