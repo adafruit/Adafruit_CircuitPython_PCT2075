@@ -70,8 +70,8 @@ class FaultCount:
     """Options for `faults_to_alert`"""
     FAULT_1 = 0
     FAULT_2 = 1
-    FAULT_4 = 3
-    FAULT_6 = 4
+    FAULT_4 = 2
+    FAULT_6 = 3
 
 # pylint: enable=bad-whitespace, too-few-public-methods
 
@@ -96,7 +96,7 @@ class PCT2075:
     """Set to True to turn off the temperature measurement circuitry in the sensor. While shut down
     the configurations properties can still be read or written but the temperature will not be
     measured"""
-    _fault_queue_length = RWBits(2, PCT2075_REGISTER_CONFIG, 5, register_width=1)
+    _fault_queue_length = RWBits(2, PCT2075_REGISTER_CONFIG, 3, register_width=1)
     _high_temperature_threshold = UnaryStruct(PCT2075_REGISTER_TOS, ">h")
     _temp_hysteresis = UnaryStruct(PCT2075_REGISTER_THYST, ">h")
     _idle_time = RWBits(5, PCT2075_REGISTER_TIDLE, 0, register_width=1)
