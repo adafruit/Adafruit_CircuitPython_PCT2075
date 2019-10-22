@@ -14,7 +14,9 @@ Introduction
     :alt: Build Status
 
 CircuitPython library for the NXP PCT2075 Digital Temperature Sensor
+
 Also supports the Microchip TC74
+
 Dependencies
 =============
 This driver depends on:
