@@ -50,36 +50,44 @@ from adafruit_register.i2c_struct import ROUnaryStruct, UnaryStruct
 from adafruit_register.i2c_bits import RWBits
 from adafruit_register.i2c_bit import RWBit
 import adafruit_bus_device.i2c_device as i2cdevice
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_PCT2075.git"
 # pylint: disable=bad-whitespace, too-few-public-methods
-PCT2075_DEFAULT_ADDRESS		 = 0x37		# Address is configured with pins A0-A2
+PCT2075_DEFAULT_ADDRESS = 0x37  # Address is configured with pins A0-A2
 
-PCT2075_REGISTER_TEMP		 = 0		# Temperature register (read-only)
-PCT2075_REGISTER_CONFIG		 = 1		# Configuration register
-PCT2075_REGISTER_THYST		 = 2		# Hysterisis register
-PCT2075_REGISTER_TOS		 = 3		# OS register
-PCT2075_REGISTER_TIDLE       = 4        # Measurement idle time register
+PCT2075_REGISTER_TEMP = 0  # Temperature register (read-only)
+PCT2075_REGISTER_CONFIG = 1  # Configuration register
+PCT2075_REGISTER_THYST = 2  # Hysterisis register
+PCT2075_REGISTER_TOS = 3  # OS register
+PCT2075_REGISTER_TIDLE = 4  # Measurement idle time register
+
 
 class Mode:
     """Options for `mode`"""
+
     INTERRUPT = 1
     COMPARITOR = 0
 
+
 class FaultCount:
     """Options for `faults_to_alert`"""
+
     FAULT_1 = 0
     FAULT_2 = 1
     FAULT_4 = 2
     FAULT_6 = 3
 
+
 # pylint: enable=bad-whitespace, too-few-public-methods
+
 
 class PCT2075:
     """Driver for the PCT2075 Digital Temperature Sensor and Thermal Watchdog.
         :param ~busio.I2C i2c_bus: The I2C bus the INA260 is connected to.
         :param address: The I2C device address for the sensor. Default is ``0x37``.
     """
+
     def __init__(self, i2c_bus, address=PCT2075_DEFAULT_ADDRESS):
         self.i2c_device = i2cdevice.I2CDevice(i2c_bus, address)
 
@@ -107,7 +115,7 @@ class PCT2075:
     @property
     def temperature(self):
         """Returns the current temperature in degress celsius. Resolution is 0.125 degrees C"""
-        return (self._temperature>>5) *  0.125
+        return (self._temperature >> 5) * 0.125
 
     @property
     def high_temperature_threshold(self):
@@ -117,7 +125,7 @@ class PCT2075:
 
     @high_temperature_threshold.setter
     def high_temperature_threshold(self, value):
-        self._high_temperature_threshold = (int(value * 2) << 7)
+        self._high_temperature_threshold = int(value * 2) << 7
 
     @property
     def temperature_hysteresis(self):
@@ -125,13 +133,15 @@ class PCT2075:
         C in which the temperature is still considered high". `temperature_hysteresis` must be
         lower than `high_temperature_threshold`. Resolution is 0.5 degrees C.
         """
-        return (self._temp_hysteresis  >> 7) * 0.5
+        return (self._temp_hysteresis >> 7) * 0.5
 
     @temperature_hysteresis.setter
     def temperature_hysteresis(self, value):
         if value >= self.high_temperature_threshold:
-            raise ValueError("temperature_hysteresis must be less than high_temperature_threshold")
-        self._temp_hysteresis = (int(value * 2) << 7)
+            raise ValueError(
+                "temperature_hysteresis must be less than high_temperature_threshold"
+            )
+        self._temp_hysteresis = int(value * 2) << 7
 
     @property
     def faults_to_alert(self):
@@ -158,6 +168,8 @@ class PCT2075:
     @delay_between_measurements.setter
     def delay_between_measurements(self, value):
         if value > 3100 or value < 100 or value % 100 > 0:
-            raise AttributeError(""""delay_between_measurements must be >= 100 or <= 3100\
-            and a multiple of 100""")
-        self._idle_time = int(value/100)
+            raise AttributeError(
+                """"delay_between_measurements must be >= 100 or <= 3100\
+            and a multiple of 100"""
+            )
+        self._idle_time = int(value / 100)
