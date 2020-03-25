@@ -84,7 +84,7 @@ class FaultCount:
 
 class PCT2075:
     """Driver for the PCT2075 Digital Temperature Sensor and Thermal Watchdog.
-        :param ~busio.I2C i2c_bus: The I2C bus the INA260 is connected to.
+        :param ~busio.I2C i2c_bus: The I2C bus the PCT2075 is connected to.
         :param address: The I2C device address for the sensor. Default is ``0x37``.
     """
 
