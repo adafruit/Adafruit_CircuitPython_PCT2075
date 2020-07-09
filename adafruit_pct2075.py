@@ -64,7 +64,7 @@ PCT2075_REGISTER_TIDLE = 4  # Measurement idle time register
 
 
 class Mode:
-    """Options for `mode`"""
+    """Options for `Mode`"""
 
     INTERRUPT = 1
     COMPARITOR = 0
