@@ -13,9 +13,12 @@ Introduction
     :target: https://github.com/adafruit/Adafruit_CircuitPython_PCT2075/actions/
     :alt: Build Status
 
-CircuitPython library for the NXP PCT2075 Digital Temperature Sensor
+CircuitPython library for the `NXP PCT2075`_ Digital Temperature Sensor
 
-Also supports the Microchip TC74
+Also supports the Microchip TC74_
+
+.. _NXP PCT2075: https://www.adafruit.com/product/4369
+.. _TC74: https://www.adafruit.com/product/4375
 
 Dependencies
 =============
