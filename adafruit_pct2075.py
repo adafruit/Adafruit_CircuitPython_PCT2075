@@ -53,7 +53,7 @@ import adafruit_bus_device.i2c_device as i2cdevice
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_PCT2075.git"
-# pylint: disable=bad-whitespace, too-few-public-methods
+# pylint: disable=too-few-public-methods
 PCT2075_DEFAULT_ADDRESS = 0x37  # Address is configured with pins A0-A2
 
 PCT2075_REGISTER_TEMP = 0  # Temperature register (read-only)
@@ -79,7 +79,7 @@ class FaultCount:
     FAULT_6 = 3
 
 
-# pylint: enable=bad-whitespace, too-few-public-methods
+# pylint: enable=too-few-public-methods
 
 
 class PCT2075:
