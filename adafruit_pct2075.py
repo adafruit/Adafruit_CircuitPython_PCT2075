@@ -104,9 +104,10 @@ class PCT2075:
     mode = RWBit(PCT2075_REGISTER_CONFIG, 1, register_width=1)
     """Sets the alert mode. In comparator mode, the sensor acts like a thermostat and will activate
     the INT pin according to `high_temp_active_high` when an alert is triggered. The INT pin will be
-    deactivated when the temperature falls below :attr:`temperature_hysteresis`. In interrupt mode the
-    INT pin is activated once when a temperature fault is detected, and once more when the
-    temperature falls below :attr:`temperature_hysteresis`. In interrupt mode, the alert is cleared by
+    deactivated when the temperature falls below :attr:`temperature_hysteresis`.
+    In interrupt mode the INT pin is activated once when a temperature fault
+    is detected, and once more when the     temperature falls below
+    :attr:`temperature_hysteresis`. In interrupt mode, the alert is cleared by
     reading a property"""
 
     shutdown = RWBit(PCT2075_REGISTER_CONFIG, 0, 1)
@@ -123,7 +124,8 @@ class PCT2075:
 
     @property
     def temperature(self):
-        """Returns the current temperature in degrees Celsius. Resolution is 0.125 degrees Celsius"""
+        """Returns the current temperature in degrees Celsius.
+        Resolution is 0.125 degrees Celsius"""
         return (self._temperature >> 5) * 0.125
 
     @property
@@ -138,9 +140,12 @@ class PCT2075:
 
     @property
     def temperature_hysteresis(self):
-        """The temperature hysteresis value defines the bottom of the temperature range in degrees
-        Celsius in which the temperature is still considered high. :attr:`temperature_hysteresis` must be
-        lower than :attr:`high_temperature_threshold`. Resolution is 0.5 degrees Celsius
+        """The temperature hysteresis value defines the bottom
+        of the temperature range in degrees Celsius in which
+        the temperature is still considered high.
+        :attr:`temperature_hysteresis` must be lower than
+        :attr:`high_temperature_threshold`.
+        Resolution is 0.5 degrees Celsius
         """
         return (self._temp_hysteresis >> 7) * 0.5
 
