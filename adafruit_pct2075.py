@@ -16,12 +16,12 @@ Implementation Notes
 
 **Hardware:**
 
-* Adafruit PCT2075 Breakout: https://www.adafruit.com/products/4369
+* Adafruit PCT2075 Temperature Sensor Breakout: https://www.adafruit.com/products/4369
 
 **Software and Dependencies:**
 
 * Adafruit CircuitPython firmware for the supported boards:
-  https://github.com/adafruit/circuitpython/releases
+  https://circuitpython.org/downloads
 
 
 
@@ -67,8 +67,34 @@ class FaultCount:
 
 class PCT2075:
     """Driver for the PCT2075 Digital Temperature Sensor and Thermal Watchdog.
+
     :param ~busio.I2C i2c_bus: The I2C bus the PCT2075 is connected to.
-    :param address: The I2C device address for the sensor. Default is ``0x37``.
+    :param address: The I2C device address for the sensor. Default is :const:`0x37`
+
+    **Quickstart: Importing and using the PCT2075 temperature sensor**
+
+        Here is one way of importing the `PCT2075` class so you can use it with the name ``pct``.
+        First you will need to import the libraries to use the sensor
+
+        .. code-block:: python
+
+            import busio
+            import board
+            import adafruit_pct2075
+
+        Once this is done you can define your `busio.I2C` object and define your sensor object
+
+        .. code-block:: python
+
+            i2c = busio.I2C(board.SCL, board.SDA)
+            pct = adafruit_pct2075.PCT2075(i2c)
+
+        Now you have access to the temperature using the attribute :attr:`temperature`.
+
+        .. code-block:: python
+
+            temperature = pct.temperature
+
     """
 
     def __init__(self, i2c_bus, address=PCT2075_DEFAULT_ADDRESS):
@@ -76,11 +102,12 @@ class PCT2075:
 
     _temperature = ROUnaryStruct(PCT2075_REGISTER_TEMP, ">h")
     mode = RWBit(PCT2075_REGISTER_CONFIG, 1, register_width=1)
-    """Sets the alert mode. In comparitor mode, the sensor acts like a thermostat and will activate
+    """Sets the alert mode. In comparator mode, the sensor acts like a thermostat and will activate
     the INT pin according to `high_temp_active_high` when an alert is triggered. The INT pin will be
-    deactiveated when the temperature falls below `temperature_hysteresis`. In interrupt mode the
-    INT pin is activated once when a temperature fault is detected, and once more when the
-    temperature falls below `temperature_hysteresis`. In interrupt mode, the alert is cleared by
+    deactivated when the temperature falls below :attr:`temperature_hysteresis`.
+    In interrupt mode the INT pin is activated once when a temperature fault
+    is detected, and once more when the     temperature falls below
+    :attr:`temperature_hysteresis`. In interrupt mode, the alert is cleared by
     reading a property"""
 
     shutdown = RWBit(PCT2075_REGISTER_CONFIG, 0, 1)
@@ -97,13 +124,14 @@ class PCT2075:
 
     @property
     def temperature(self):
-        """Returns the current temperature in degress celsius. Resolution is 0.125 degrees C"""
+        """Returns the current temperature in degrees Celsius.
+        Resolution is 0.125 degrees Celsius"""
         return (self._temperature >> 5) * 0.125
 
     @property
     def high_temperature_threshold(self):
         """The temperature in degrees celsius that will trigger an alert on the INT pin if it is
-        exceeded. Resolution is 0.5 degrees C."""
+        exceeded. Resolution is 0.5 degrees Celsius"""
         return (self._high_temperature_threshold >> 7) * 0.5
 
     @high_temperature_threshold.setter
@@ -112,9 +140,12 @@ class PCT2075:
 
     @property
     def temperature_hysteresis(self):
-        """The temperature hysteresis value defines the bottom of the temperature range in degrees
-        C in which the temperature is still considered high". `temperature_hysteresis` must be
-        lower than `high_temperature_threshold`. Resolution is 0.5 degrees C.
+        """The temperature hysteresis value defines the bottom
+        of the temperature range in degrees Celsius in which
+        the temperature is still considered high.
+        :attr:`temperature_hysteresis` must be lower than
+        :attr:`high_temperature_threshold`.
+        Resolution is 0.5 degrees Celsius
         """
         return (self._temp_hysteresis >> 7) * 0.5
 
@@ -130,8 +161,8 @@ class PCT2075:
     def faults_to_alert(self):
         """The number of consecutive high temperature faults required to raise an alert. An fault
         is tripped each time the sensor measures the temperature to be greater than
-        `high_temperature_threshold`. The rate at which the sensor measures the temperature
-        is defined by `delay_between_measurements`.
+        :attr:`high_temperature_threshold`. The rate at which the sensor measures the temperature
+        is defined by :attr:`delay_between_measurements`.
         """
 
         return self._fault_queue_length
