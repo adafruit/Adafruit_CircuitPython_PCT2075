@@ -63,10 +63,9 @@ Usage Example
 
     import time
     import board
-    import busio
     import adafruit_pct2075
-    i2c = busio.I2C(board.SCL, board.SDA)
 
+    i2c = board.I2C()
     pct = adafruit_pct2075.PCT2075(i2c)
 
     while True:

@@ -69,24 +69,23 @@ class PCT2075:
     """Driver for the PCT2075 Digital Temperature Sensor and Thermal Watchdog.
 
     :param ~busio.I2C i2c_bus: The I2C bus the PCT2075 is connected to.
-    :param address: The I2C device address for the sensor. Default is :const:`0x37`
+    :param address: The I2C device address. Default is :const:`0x37`
 
     **Quickstart: Importing and using the PCT2075 temperature sensor**
 
-        Here is one way of importing the `PCT2075` class so you can use it with the name ``pct``.
+        Here is an example of using the :class:`PCT2075` class.
         First you will need to import the libraries to use the sensor
 
         .. code-block:: python
 
-            import busio
             import board
             import adafruit_pct2075
 
-        Once this is done you can define your `busio.I2C` object and define your sensor object
+        Once this is done you can define your `board.I2C` object and define your sensor object
 
         .. code-block:: python
 
-            i2c = busio.I2C(board.SCL, board.SDA)
+            i2c = board.I2C()  # uses board.SCL and board.SDA
             pct = adafruit_pct2075.PCT2075(i2c)
 
         Now you have access to the temperature using the attribute :attr:`temperature`.
