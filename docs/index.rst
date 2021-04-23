@@ -23,10 +23,12 @@ Table of Contents
 .. toctree::
     :caption: Tutorials
 
+    Adafruit PCT2075 Temperature Sensor Learning Guide <https://learn.adafruit.com/adafruit-pct2075-temperature-sensor>
+
 .. toctree::
     :caption: Related Products
 
-.. Adafruit PCT2075 Breakout <https://www.adafruit.com/products/4369>
+    Adafruit PCT2075 Temperature Sensor Breakout <https://www.adafruit.com/products/4369>
 
 .. toctree::
     :caption: Other Links
