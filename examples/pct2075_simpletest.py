@@ -5,7 +5,7 @@ import time
 import board
 import adafruit_pct2075
 
-i2c = board.I2C()
+i2c = board.I2C()  # uses board.SCL and board.SDA
 pct = adafruit_pct2075.PCT2075(i2c)
 
 while True:

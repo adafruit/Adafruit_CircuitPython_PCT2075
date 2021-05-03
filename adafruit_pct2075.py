@@ -16,17 +16,20 @@ Implementation Notes
 
 **Hardware:**
 
-* Adafruit PCT2075 Temperature Sensor Breakout: https://www.adafruit.com/products/4369
+* `Adafruit PCT2075 Temperature Sensor Breakout
+  https://www.adafruit.com/products/4369`_ (Product ID: 4369)
 
 **Software and Dependencies:**
 
 * Adafruit CircuitPython firmware for the supported boards:
   https://circuitpython.org/downloads
 
+* Adafruit's Bus Device library:
+  https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 
+* Adafruit's Register library:
+  https://github.com/adafruit/Adafruit_CircuitPython_Register
 
-* Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
-* Adafruit's Register library: https://github.com/adafruit/Adafruit_CircuitPython_Register
 """
 
 from adafruit_register.i2c_struct import ROUnaryStruct, UnaryStruct
