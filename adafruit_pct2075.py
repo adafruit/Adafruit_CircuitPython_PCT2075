@@ -17,7 +17,7 @@ Implementation Notes
 **Hardware:**
 
 * `Adafruit PCT2075 Temperature Sensor Breakout
-  https://www.adafruit.com/products/4369`_ (Product ID: 4369)
+  <https://www.adafruit.com/products/4369>`_ (Product ID: 4369)
 
 **Software and Dependencies:**
 
