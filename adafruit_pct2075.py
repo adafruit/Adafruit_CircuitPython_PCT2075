@@ -38,7 +38,7 @@ from adafruit_register.i2c_bit import RWBit
 import adafruit_bus_device.i2c_device as i2cdevice
 
 try:
-    import typing # pylint: disable=unused-import
+    import typing  # pylint: disable=unused-import
     from busio import I2C
 except ImportError:
     pass
