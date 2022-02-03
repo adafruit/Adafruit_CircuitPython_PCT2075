@@ -37,6 +37,12 @@ from adafruit_register.i2c_bits import RWBits
 from adafruit_register.i2c_bit import RWBit
 import adafruit_bus_device.i2c_device as i2cdevice
 
+try:
+    import typing  # pylint: disable=unused-import
+    from busio import I2C
+except ImportError:
+    pass
+
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_PCT2075.git"
 # pylint: disable=too-few-public-methods
@@ -72,7 +78,7 @@ class PCT2075:
     """Driver for the PCT2075 Digital Temperature Sensor and Thermal Watchdog.
 
     :param ~busio.I2C i2c_bus: The I2C bus the PCT2075 is connected to.
-    :param address: The I2C device address. Default is :const:`0x37`
+    :param int address: The I2C device address. Default is :const:`0x37`
 
     **Quickstart: Importing and using the PCT2075 temperature sensor**
 
@@ -99,7 +105,7 @@ class PCT2075:
 
     """
 
-    def __init__(self, i2c_bus, address=PCT2075_DEFAULT_ADDRESS):
+    def __init__(self, i2c_bus: I2C, address: int = PCT2075_DEFAULT_ADDRESS) -> None:
         self.i2c_device = i2cdevice.I2CDevice(i2c_bus, address)
 
     _temperature = ROUnaryStruct(PCT2075_REGISTER_TEMP, ">h")
@@ -125,23 +131,23 @@ class PCT2075:
     triggered. If set to True it will be disconnected from ground when an alert is triggered."""
 
     @property
-    def temperature(self):
+    def temperature(self) -> float:
         """Returns the current temperature in degrees Celsius.
         Resolution is 0.125 degrees Celsius"""
         return (self._temperature >> 5) * 0.125
 
     @property
-    def high_temperature_threshold(self):
+    def high_temperature_threshold(self) -> float:
         """The temperature in degrees celsius that will trigger an alert on the INT pin if it is
         exceeded. Resolution is 0.5 degrees Celsius"""
         return (self._high_temperature_threshold >> 7) * 0.5
 
     @high_temperature_threshold.setter
-    def high_temperature_threshold(self, value):
+    def high_temperature_threshold(self, value: float) -> None:
         self._high_temperature_threshold = int(value * 2) << 7
 
     @property
-    def temperature_hysteresis(self):
+    def temperature_hysteresis(self) -> float:
         """The temperature hysteresis value defines the bottom
         of the temperature range in degrees Celsius in which
         the temperature is still considered high.
@@ -152,7 +158,7 @@ class PCT2075:
         return (self._temp_hysteresis >> 7) * 0.5
 
     @temperature_hysteresis.setter
-    def temperature_hysteresis(self, value):
+    def temperature_hysteresis(self, value: float) -> None:
         if value >= self.high_temperature_threshold:
             raise ValueError(
                 "temperature_hysteresis must be less than high_temperature_threshold"
@@ -160,7 +166,7 @@ class PCT2075:
         self._temp_hysteresis = int(value * 2) << 7
 
     @property
-    def faults_to_alert(self):
+    def faults_to_alert(self) -> int:
         """The number of consecutive high temperature faults required to raise an alert. An fault
         is tripped each time the sensor measures the temperature to be greater than
         :attr:`high_temperature_threshold`. The rate at which the sensor measures the temperature
@@ -170,19 +176,19 @@ class PCT2075:
         return self._fault_queue_length
 
     @faults_to_alert.setter
-    def faults_to_alert(self, value):
+    def faults_to_alert(self, value: int) -> None:
         if value > 4 or value < 1:
             raise ValueError("faults_to_alert must be an adafruit_pct2075.FaultCount")
         self._fault_queue_length = value
 
     @property
-    def delay_between_measurements(self):
+    def delay_between_measurements(self) -> int:
         """The amount of time between measurements made by the sensor in milliseconds. The value
         must be between 100 and 3100 and a multiple of 100"""
         return self._idle_time * 100
 
     @delay_between_measurements.setter
-    def delay_between_measurements(self, value):
+    def delay_between_measurements(self, value: int) -> None:
         if value > 3100 or value < 100 or value % 100 > 0:
             raise AttributeError(
                 """"delay_between_measurements must be >= 100 or <= 3100\
