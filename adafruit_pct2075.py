@@ -43,7 +43,7 @@ try:
 except ImportError:
     pass
 
-__version__ = "0.0.0-auto.0"
+__version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_PCT2075.git"
 # pylint: disable=too-few-public-methods
 PCT2075_DEFAULT_ADDRESS = 0x37  # Address is configured with pins A0-A2
