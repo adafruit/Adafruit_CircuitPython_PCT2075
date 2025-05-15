@@ -32,20 +32,20 @@ Implementation Notes
 
 """
 
-from adafruit_register.i2c_struct import ROUnaryStruct, UnaryStruct
-from adafruit_register.i2c_bits import RWBits
-from adafruit_register.i2c_bit import RWBit
 import adafruit_bus_device.i2c_device as i2cdevice
+from adafruit_register.i2c_bit import RWBit
+from adafruit_register.i2c_bits import RWBits
+from adafruit_register.i2c_struct import ROUnaryStruct, UnaryStruct
 
 try:
-    import typing  # pylint: disable=unused-import
+    import typing
+
     from busio import I2C
 except ImportError:
     pass
 
 __version__ = "0.0.0+auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_PCT2075.git"
-# pylint: disable=too-few-public-methods
 PCT2075_DEFAULT_ADDRESS = 0x37  # Address is configured with pins A0-A2
 
 PCT2075_REGISTER_TEMP = 0  # Temperature register (read-only)
@@ -69,9 +69,6 @@ class FaultCount:
     FAULT_2 = 1
     FAULT_4 = 2
     FAULT_6 = 3
-
-
-# pylint: enable=too-few-public-methods
 
 
 class PCT2075:
@@ -160,9 +157,7 @@ class PCT2075:
     @temperature_hysteresis.setter
     def temperature_hysteresis(self, value: float) -> None:
         if value >= self.high_temperature_threshold:
-            raise ValueError(
-                "temperature_hysteresis must be less than high_temperature_threshold"
-            )
+            raise ValueError("temperature_hysteresis must be less than high_temperature_threshold")
         self._temp_hysteresis = int(value * 2) << 7
 
     @property
