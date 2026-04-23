@@ -12,5 +12,5 @@ i2c = board.I2C()  # uses board.SCL and board.SDA
 pct = adafruit_pct2075.PCT2075(i2c)
 
 while True:
-    print("Temperature: %.2f C" % pct.temperature)
+    print(f"Temperature: {pct.temperature:.2f} C")
     time.sleep(0.5)
